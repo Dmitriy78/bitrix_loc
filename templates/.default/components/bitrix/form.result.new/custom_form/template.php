@@ -40,7 +40,7 @@ if ($arResult["isFormErrors"] == "Y"):
 
                     <?php if ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden') : ?>
                         <?= $arQuestion["HTML_CODE"]; ?>
-                    <?php elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'text') : ?>
+                    <?php elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] != 'textarea') : ?>
 
                         <div class="input contact-form__input">
                             <label class="input__label" for="<?= $FIELD_SID ?>">
@@ -72,9 +72,12 @@ if ($arResult["isFormErrors"] == "Y"):
                             <?= ($arResult["QUESTIONS"]['medicine_message']['REQUIRED'] === 'Y' ? ' *' : '') ?>
                         </div>
                         <?= $arResult["QUESTIONS"]['medicine_message']['HTML_CODE'] ?>
-                        <div class="input__notification">
-                            <?= $arResult['FORM_ERRORS']['medicine_message'] ?? '' ?>
-                        </div>
+
+                        <?php if (isset($arResult["FORM_ERRORS"][$FIELD_SID])): ?>
+                            <div class="input__notification">
+                                <?= htmlspecialcharsbx($arResult["FORM_ERRORS"][$FIELD_SID]) ?>
+                            </div>
+                        <?php endif; ?>
                     </label>
                 </div>
             </div>
@@ -98,4 +101,7 @@ if ($arResult["isFormErrors"] == "Y"):
     </div>
 
     <?php
+
+
+
  endif ;

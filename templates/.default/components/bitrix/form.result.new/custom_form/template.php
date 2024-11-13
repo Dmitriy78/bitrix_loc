@@ -6,7 +6,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /**
  * @var array $arResult
  */
-if ($arResult["isFormErrors"] == "Y") :
+if ($arResult["isFormErrors"] == "Y"):
     ?>
     <?= $arResult["FORM_ERRORS_TEXT"]; ?>
 <?php endif; ?>
@@ -29,72 +29,39 @@ if ($arResult["isFormErrors"] == "Y") :
             </div>
         </div>
 
-        <?php // $arResult["FORM_HEADER"]    ?>
+        <?php // $arResult["FORM_HEADER"]   ?>
         <form name="<?= $arResult["WEB_FORM_NAME"] ?>" action="<?= POST_FORM_ACTION_URI ?>" method="POST"  class="contact-form__form" enctype="multipart/form-data">
             <input type="hidden" name="WEB_FORM_ID" value="<?= $arParams["WEB_FORM_ID"] ?>">
             <?= bitrix_sessid_post() ?>
 
             <div class="contact-form__form-inputs">
 
-                <div class="input contact-form__input">
-                    <label class="input__label" for="medicine_name">
-                        <div class="input__label-text">
-                            <?= $arResult["QUESTIONS"]['medicine_name']['CAPTION'] ?>
-                            <?php if ($arResult["QUESTIONS"]['medicine_name']['REQUIRED'] === 'Y') : ?>
-                                <span class="form-required starrequired">*</span>
-                            <?php endif; ?>
-                        </div>
-                        <?= $arResult["QUESTIONS"]['medicine_name']['HTML_CODE'] ?>
-                        <div class="input__notification">
-                            <?= $arResult['FORM_ERRORS']['medicine_name'] ?? '' ?>
-                        </div>
-                    </label>
-                </div>
+                <?php foreach ($arResult["QUESTIONS"] as $FIELD_SID => $arQuestion) : ?>
 
-                <div class="input contact-form__input">
-                    <label class="input__label" for="medicine_company">
-                        <div class="input__label-text">
-                            <?= $arResult["QUESTIONS"]['medicine_company']['CAPTION'] ?>
-                            <?php if ($arResult["QUESTIONS"]['medicine_company']['REQUIRED'] === 'Y') : ?>
-                                <span class="form-required starrequired">*</span>
-                            <?php endif; ?>
-                        </div>
-                        <?= $arResult["QUESTIONS"]['medicine_company']['HTML_CODE'] ?>
-                        <div class="input__notification">
-                            <?= $arResult['FORM_ERRORS']['medicine_company'] ?? '' ?>
-                        </div>
-                    </label>
-                </div>
+                    <?php if ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden') : ?>
+                        <?= $arQuestion["HTML_CODE"]; ?>
+                    <?php elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'text') : ?>
 
-                <div class="input contact-form__input">
-                    <label class="input__label" for="medicine_email">
-                        <div class="input__label-text">
-                            <?= $arResult["QUESTIONS"]['medicine_email']['CAPTION'] ?>
-                            <?php if ($arResult["QUESTIONS"]['medicine_email']['REQUIRED'] === 'Y') : ?>
-                                <span class="form-required starrequired">*</span>
-                            <?php endif; ?>
-                        </div>
-                        <?= $arResult["QUESTIONS"]['medicine_email']['HTML_CODE'] ?>
-                        <div class="input__notification">
-                            <?= $arResult['FORM_ERRORS']['medicine_email'] ?? '' ?>
-                        </div>
-                    </label>
-                </div>
+                        <div class="input contact-form__input">
+                            <label class="input__label" for="<?= $FIELD_SID ?>">
+                                <div class="input__label-text">
+                                    <?= $arQuestion["CAPTION"] ?>
+                                    <?php if ($arQuestion["REQUIRED"] == "Y"): ?>
+                                        <?= $arResult["REQUIRED_SIGN"]; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <?= $arQuestion["HTML_CODE"] ?>
 
-                <div class="input contact-form__input">
-                    <label class="input__label" for="medicine_phone">
-                        <div class="input__label-text">
-                            <?= $arResult["QUESTIONS"]['medicine_phone']['CAPTION'] ?>
-                            <?php if ($arResult["QUESTIONS"]['medicine_phone']['REQUIRED'] === 'Y') : ?>
-                                <span class="form-required starrequired">*</span>
-                            <?php endif; ?>
+                                <?php if (isset($arResult["FORM_ERRORS"][$FIELD_SID])): ?>
+                                    <div class="input__notification">
+                                        <?= htmlspecialcharsbx($arResult["FORM_ERRORS"][$FIELD_SID]) ?>
+                                    </div>
+                                <?php endif; ?>
+                            </label>
                         </div>
-                        <?= $arResult["QUESTIONS"]['medicine_phone']['HTML_CODE'] ?>
-                        <div class="input__notification">
-                            <?= $arResult['FORM_ERRORS']['medicine_phone'] ?? '' ?>
-                        </div>
-                    </label>
-                </div>
+
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </div>
 
             <div class="contact-form__form-message">
@@ -118,8 +85,7 @@ if ($arResult["isFormErrors"] == "Y") :
                     данных&raquo;.
                 </div>
 
-
-                <input type="hidden" name="web_form_submit" value="Y"/>
+                <input type="hidden" name="web_form_submit" value="1"/>
 
                 <button class="form-button contact-form__bottom-button" data-success="Отправлено"
                         data-error="Ошибка отправки">
@@ -132,13 +98,4 @@ if ($arResult["isFormErrors"] == "Y") :
     </div>
 
     <?php
-
-
-
-
-
-
-
-
-
- endif;
+ endif ;

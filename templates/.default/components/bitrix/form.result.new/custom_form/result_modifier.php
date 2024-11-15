@@ -9,9 +9,9 @@ foreach ($arResult["QUESTIONS"] as $FIELD_SID => &$arQuestion) {
 
     $field_type = 'text';
 
-    $value = $arResult['arrVALUES']['form_text_' . $arQuestion['STRUCTURE'][0]['ID']] ?? '';
-
     if ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'text') {
+
+        $value = $arResult['arrVALUES']['form_text_' . $arQuestion['STRUCTURE'][0]['ID']] ?? '';
 
         if (strpos($arQuestion['STRUCTURE'][0]['FIELD_PARAM'], 'phone') !== false) {
             $field_type = 'tel';
@@ -28,6 +28,8 @@ foreach ($arResult["QUESTIONS"] as $FIELD_SID => &$arQuestion) {
 
     if ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'textarea') {
 
-        $arQuestion["HTML_CODE"] = "<textarea class='input__input' type='{$field_type}' id='{$FIELD_SID}' name='form_text_{$arQuestion['STRUCTURE'][0]["ID"]}' {$params} {$required} >{$value}</textarea>";
+        $value = $arResult['arrVALUES']['form_textarea_' . $arQuestion['STRUCTURE'][0]['ID']] ?? '';
+
+        $arQuestion["HTML_CODE"] = "<textarea class='input__input' type='{$field_type}' id='{$FIELD_SID}' name='form_textarea_{$arQuestion['STRUCTURE'][0]["ID"]}' {$params} {$required} >{$value}</textarea>";
     }
 }
